@@ -1,5 +1,7 @@
 # Unlimited Gunah Simulator
 
+![Unlimited Gunah Simulator](media/cover.png)
+
 **Unlimited Gunah Simulator** is a Linux-style operating system by **[kurupdevs](https://github.com/kurupdevs)** (Ayush Jain) that runs entirely in your browser — no install, no download.
 
 🌐 **Try it live:** https://kurupdevs.github.io/unlimited-gunah-simulator/

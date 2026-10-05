@@ -540,8 +540,8 @@ function openWin(id,title,html,w,h,x,y){
   document.addEventListener('mouseup',()=>drag=null);
   el.addEventListener('mousedown',()=>focusWin(W),true);
   el.querySelectorAll('.tb').forEach(b=>b.onclick=e=>{e.stopPropagation();const a=b.dataset.a;
-    if(a==='close'){el.classList.add('closing');setTimeout(()=>{el.remove();delete openWins[id];refreshDock()},170)}
-    if(a==='min'){el.classList.add('min');refreshDock()}
+    if(a==='close'){stopWinMedia(el);el.classList.add('closing');setTimeout(()=>{el.remove();delete openWins[id];refreshDock()},170)}
+    if(a==='min'){stopWinMedia(el);el.classList.add('min');refreshDock()}
     if(a==='max'){if(el.dataset.mx){el.style.left=el.dataset.x;el.style.top=el.dataset.y;el.style.width=el.dataset.w;el.style.height=el.dataset.h;delete el.dataset.mx}
       else{el.dataset.x=el.style.left;el.dataset.y=el.style.top;el.dataset.w=el.style.width;el.style.height=el.style.height;
         el.style.left='70px';el.style.top='40px';el.style.width=(innerWidth-140)+'px';el.style.height=(innerHeight-80)+'px';el.dataset.mx=1}}});
@@ -583,7 +583,7 @@ function refreshDock(){
     b.innerHTML=iconHTML(a[0]);
     if(openWins[a[0]])b.classList.add('run');
     b.onclick=()=>{const W1=openWins[a[0]];
-      if(W1&&!W1.el.classList.contains('min')){W1.el.classList.add('min');refreshDock();}
+      if(W1&&!W1.el.classList.contains('min')){stopWinMedia(W1.el);W1.el.classList.add('min');refreshDock();}
       else a[2]()};
     b.oncontextmenu=e=>{e.preventDefault();e.stopPropagation();dockMenu(e.clientX,e.clientY,a);};
     d.appendChild(b);});
@@ -653,7 +653,8 @@ function togglePin(id){const i=dockApps.findIndex(a=>a[0]===id);
  refreshDock();}
 function toggleFav(id){const a=MENU_APPS.find(v=>v.id===id);if(!a)return;a.fav=!a.fav;
  if($('#startmenu').dataset.built)renderStartMenu();}
-function closeWinById(id){const W=openWins[id];if(!W)return;W.el.classList.add('closing');
+function stopWinMedia(el){try{el.querySelectorAll('video,audio').forEach(function(m){try{m.pause()}catch(e){}})}catch(e){}}
+function closeWinById(id){const W=openWins[id];if(!W)return;stopWinMedia(W.el);W.el.classList.add('closing');
  setTimeout(()=>{W.el.remove();delete openWins[id];refreshDock();},170);}
 const APPDESC={files:'Browse, organize and manage your files and folders.',chrome:'Fast and secure web browser.',firefox:'Open-source web browser from Mozilla.',edge:'Modern web browser.',terminal:'kurupdevs command-line portfolio and tools.',telegram:'Fast and secure messaging.',discord:'Chat, voice and communities.',steam:'PC gaming platform and store.',youtube:'Watch and share videos.',github:'Code hosting and collaboration.',smartclean:'System cleaner and optimizer.',trash:'Deleted files are kept here.',calc:'Simple calculator.',editor:'Plain-text editor.',wallpapers:'Browse and set desktop wallpapers.',notes:'Quick sticky notes.',radio:'Live internet radio stations.',imageviewer:'View your images.',settings:'System settings and preferences.',kurubeats:'Music player with live visualizer.'};
 function openAppInfo(id){closeAppInfo();
